@@ -75,19 +75,16 @@ class Solver:
         self.updatePossibleMoves()
         self.elimCand()
 
-        for space in self.empty_spaces:
-            print(space)
+        if (len(self.empty_spaces) > 0):
+            solution = self.dfs()
 
-        # if (len(self.empty_spaces) > 0):
-        #     solution = self.dfs()
+        t2 = time.perf_counter()
+        print("Solved puzzle in %f seconds." % (t2 - t1))
 
-        # t2 = time.perf_counter()
-        # print("Solved puzzle in %f seconds." % (t2 - t1))
-
-        # if (solution):
-        #     solution.printPuzzle()
-        # else:
-        #     self.printPuzzle()
+        if (solution):
+            solution.printPuzzle()
+        else:
+            self.printPuzzle()
 
     def dfs(self):
         if (len(self.empty_spaces) == 0):
@@ -119,8 +116,6 @@ class Solver:
         while (sFound):
             self.updatePossibleMoves()
             self.elimSingletons()
-
-        # self.elimPairs()
 
     def updatePossibleMoves(self):
         allMoves = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
