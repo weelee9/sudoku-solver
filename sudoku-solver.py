@@ -24,21 +24,23 @@ class Solver:
             col = index % 9
             box = self.getBox(row, col)
 
-            if (int(char) == 0):
-                self.empty_spaces.append([(row, col, box), set([])])
+            position = (str(row), str(col), str(box))
 
-            self.initDict(int(char), (row, col, box))
+            if (int(char) == 0):
+                self.empty_spaces.append([position, set([])])
+
+            self.initDict(int(char), position)
 
             index += 1
 
     def initDict(self, num, position):
-        row, col, box = position[0], position[1], position[2]
+        row, col, box = position
 
-        self.puzzle_dict['r' + str(row)].append(num)
-        self.puzzle_dict['c' + str(col)].append(num)
+        self.puzzle_dict['r' + row].append(num)
+        self.puzzle_dict['c' + col].append(num)
 
         if (num != 0):
-            self.puzzle_dict['b' + str(box)].append(num)
+            self.puzzle_dict['b' + box].append(num)
 
     def getBox(self, row, col):
         if (row < 3):
@@ -123,7 +125,7 @@ class Solver:
 
         for space in self.empty_spaces:
             position = space[0]
-            row, col, box = str(position[0]), str(position[1]), str(position[2])
+            row, col, box = position
 
             notPossible = set(self.puzzle_dict['r' + row]).union(set(self.puzzle_dict['c' + col])).union(set(self.puzzle_dict['b' + box]))
             possibleMoves = allMoves - notPossible
@@ -144,17 +146,17 @@ class Solver:
         return solved
 
     def updateDict(self, num, position):
-        row, col, box = position[0], position[1], position[2]
+        row, col, box = position
 
-        if (num in self.puzzle_dict['r' + str(row)] or num in self.puzzle_dict['c' + str(col)]\
-            or num in self.puzzle_dict['b' + str(box)]):
+        if (num in self.puzzle_dict['r' + row] or num in self.puzzle_dict['c' + col]\
+            or num in self.puzzle_dict['b' + box]):
             return False
 
-        self.puzzle_dict['r' + str(row)][col] = num
-        self.puzzle_dict['c' + str(col)][row] = num
+        self.puzzle_dict['r' + row][int(col)] = num
+        self.puzzle_dict['c' + col][int(row)] = num
 
         if (num != 0):
-            self.puzzle_dict['b' + str(box)].append(num)
+            self.puzzle_dict['b' + box].append(num)
 
         return True
 
